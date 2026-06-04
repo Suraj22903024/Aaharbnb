@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aahar - Home Food, Away From Home</title>
+    <style>
+        /* CSS: Clean, modern, and professional look */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #e65c00;
+            margin-bottom: 5px;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        /* Chef Onboarding Banner */
+        .onboarding-banner {
+            background: linear-gradient(135deg, #e65c00, #ff8533);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 960px;
+            width: 100%;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(230, 92, 0, 0.2);
+        }
+
+        .onboarding-banner h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.3rem;
+        }
+
+        .onboarding-banner p {
+            margin: 0 0 12px 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .onboarding-btn {
+            background-color: white;
+            color: #e65c00;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .onboarding-btn:hover {
+            background-color: #fff0e6;
+            transform: scale(1.03);
+        }
+
+        /* The Card Container */
+        .marketplace {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* The Food Card */
+        .chef-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 320px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chef-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .badge {
+            background-color: #ffebe0;
+            color: #e65c00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .chef-name {
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
+            color: #333;
+        }
+
+        .menu-box {
+            background-color: #fdf8f5;
+            border-left: 4px solid #e65c00;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            color: #e65c00;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .price-tag {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-top: auto;
+        }
+
+        .delivery-text {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* The Order Button */
+        .order-btn {
+            width: 100%;
+            background-color: #e65c00;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .order-btn:hover {
+            background-color: #cc5200;
+        }
+        
+        .order-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Past Orders Dashboard Section */
+        .history-section {
+            max-width: 960px;
+            width: 100%;
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        .history-section h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .order-history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f9f9f9;
+            font-size: 0.95rem;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-details {
+            color: #555;
+        }
+
+        .history-meta {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .history-status {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .no-history {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Checkout Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 60px;
+        }
+
+        /* QR Code Container Styling */
+        .qr-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .qr-container img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 8px;
+        }
+
+        .qr-text {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Aahar</h1>
+        <p>Authentic regional meals cooked by local families. Pre-order for tomorrow.</p>
+    </header>
+
+    <div class="onboarding-banner">
+        <h3>Are you a passionate Home Chef?</h3>
+        <p>Join the Aahar family, share your regional delicacies, and start earning from your own kitchen!</p>
+        <a href="https://forms.gle/KFzbSCWj7P9hMXJ78" target="_blank" class="onboarding-btn">Apply as a Home Chef</a>
+    </div>
+
+    <div class="marketplace">
+
+        <div class="chef-card">
+            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500" alt="Home Kitchen" class="chef-image">
+            <div class="card-content">
+                <span class="badge">Authentic Bengali</span>
+                <h2 class="chef-name">Sima's Kitchen</h2>
+                
+                <div class="menu-box">
+                    <div class="menu-title">TOMORROW'S LUNCH MENU:</div>
+                    <div>Baat (Rice), Dal, Aloo Bhaja, and Fresh Rui Macher Jhol (Fish Curry)</div>
+                </div>
+
+                <div class="price-tag">₹90 / plate</div>
+                <div class="delivery-text">🏍️ Delivered by her son, Joy (+ ₹15)</div>
+                
+                <button class="order-btn" onclick="openCheckout('Sima\'s Kitchen', 'Bengali Lunch (Rice, Dal, Fish Curry)', 105)">Pre-Order Lunch</button>
+            </div>
+        </div>
+
+        <div class="chef-card">
+            <img src="https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=500" alt="Home Kitchen" class="chef-image">
+            <div class="card-content">
+                <span class="badge">Authentic Odia</span>
+                <h2 class="chef-name">Minati's Kitchen</h2>
+                
+                <div class="menu-box">
+                    <div class="menu-title">TOMORROW'S LUNCH MENU:</div>
+                    <div>Rice, Traditional Odia Dalma (Lentil Veggie Stew), and Baigan Bharta</div>
+                </div>
+
+                <div class="price-tag">₹80 / plate</div>
+                <div class="delivery-text">🏍️ Delivered by her husband, Rajesh (+ ₹15)</div>
+                
+                <button class="order-btn" onclick="openCheckout('Minati\'s Kitchen', 'Odia Lunch (Rice, Dalma, Baigan Bharta)', 95)">Pre-Order Lunch</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="history-section">
+        <h3>Your Order Dashboard</h3>
+        <ul id="orderHistoryList" class="order-history-list"></ul>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeCheckout()">&times;</button>
+            <h3 id="modalTitle">Checkout</h3>
+            
+            <form id="orderForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label for="custName">Your Name</label>
+                    <input type="text" id="custName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="custPhone">Phone Number</label>
+                    <input type="tel" id="custPhone" placeholder="Enter mobile number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="custAddress">Hostel / Room No. / Address</label>
+                    <textarea id="custAddress" placeholder="e.g., Room 304, Raman Hostel" required></textarea>
+                </div>
+
+                <div id="desktopQrBox" class="qr-container">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #2e7d32; font-size: 0.95rem;">🔒 Instant Cashless Payment</p>
+                    <img id="qrCodeImg" src="" alt="UPI QR Code">
+                    <p class="qr-text">Scan with GPay, PhonePe, or Paytm to pay <strong><span id="qrPriceText"></span></strong> before completing via WhatsApp.</p>
+                </div>
+
+                <button type="button" id="mobilePayBtn" class="order-btn" style="background-color: #2e7d32; margin-top: 5px; margin-bottom: 10px; display: none;" onclick="payViaUpiIntent()">
+                    📱 Pay ₹<span id="mobilePriceText"></span> via UPI Apps (GPay/PhonePe)
+                </button>
+
+                <button type="submit" id="submitOrderBtn" class="whatsapp-btn">
+                    <span>💬</span> Confirm & Route via WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentKitchen = "";
+        let currentMenu = "";
+        let currentPriceNum = 0; 
+        let dynamicUpiUrl = "";
+        let paymentInitiated = false; // tracks if mobile UPI step was completed
+
+        // BUSINESS CONFIGURATION
+        const MY_WHATSAPP_NUMBER = "919339644471"; 
+        const MY_UPI_ID = "suraj.4471@ptyes"; 
+        const MERCHANT_NAME = "Aahar Food Marketplace";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadUserProfile();
+            renderOrderHistory();
+        });
+
+        function openCheckout(kitchenName, menuDetails, totalCostNum) {
+            currentKitchen = kitchenName;
+            currentMenu = menuDetails;
+            currentPriceNum = totalCostNum;
+
+            document.getElementById('modalTitle').innerText = "Order from " + kitchenName;
+            loadUserProfile();
+
+            dynamicUpiUrl = `upi://pay?pa=${MY_UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${totalCostNum}&cu=INR&tn=${encodeURIComponent('Order from ' + kitchenName)}`;
+            
+            const qrBox = document.getElementById('desktopQrBox');
+            const qrImg = document.getElementById('qrCodeImg');
+            const mobilePayBtn = document.getElementById('mobilePayBtn');
+            const submitBtn = document.getElementById('submitOrderBtn');
+            
+            document.getElementById('qrPriceText').innerText = "₹" + totalCostNum;
+            document.getElementById('mobilePriceText').innerText = totalCostNum;
+
+            paymentInitiated = false; // reset on every fresh checkout open
+
+            if (window.innerWidth > 768) {
+                // Desktop Mode
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(dynamicUpiUrl)}`;
+                qrBox.style.display = 'flex';
+                mobilePayBtn.style.display = 'none';
+                submitBtn.style.display = 'flex';
+                submitBtn.innerHTML = "<span>💬</span> Confirm & Route via WhatsApp";
+                submitBtn.style.backgroundColor = "#25D366";
+            } else {
+                // Mobile Mode: Initialize workflow state back to the Step 1 pay state
+                qrBox.style.display = 'none';
+                mobilePayBtn.style.display = 'block';
+                mobilePayBtn.style.backgroundColor = "#2e7d32";
+                mobilePayBtn.innerText = `📱 Pay ₹${totalCostNum} via UPI Apps (GPay/PhonePe)`;
+                
+                // Dim the whatsapp button visually until they hit pay
+                submitBtn.style.backgroundColor = "#999";
+                submitBtn.innerHTML = "<span>💬</span> Step 2: Send Order to WhatsApp";
+            }
+
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+
+        // Triggered exclusively when clicking the native mobile app launcher button
+        function payViaUpiIntent() {
+            // Check form validation manually first so they don't buy without giving delivery info
+            const form = document.getElementById('orderForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Route execution launch sequence
+            window.location.href = dynamicUpiUrl;
+            paymentInitiated = true; // mark payment as initiated
+
+            // Change the buttons visually so the user can easily proceed to WhatsApp after returning
+            const mobilePayBtn = document.getElementById('mobilePayBtn');
+            const submitBtn = document.getElementById('submitOrderBtn');
+            
+            mobilePayBtn.style.backgroundColor = "#777";
+            mobilePayBtn.innerText = "✓ Payment Initiated";
+            
+            submitBtn.style.backgroundColor = "#25D366";
+            submitBtn.innerHTML = "<span>💬</span> Complete Order on WhatsApp";
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+
+        function saveUserProfile(name, phone, address) {
+            localStorage.setItem('aahar_custName', name);
+            localStorage.setItem('aahar_custPhone', phone);
+            localStorage.setItem('aahar_custAddress', address);
+        }
+
+        function loadUserProfile() {
+            if(localStorage.getItem('aahar_custName')) {
+                document.getElementById('custName').value = localStorage.getItem('aahar_custName');
+            }
+            if(localStorage.getItem('aahar_custPhone')) {
+                document.getElementById('custPhone').value = localStorage.getItem('aahar_custPhone');
+            }
+            if(localStorage.getItem('aahar_custAddress')) {
+                document.getElementById('custAddress').value = localStorage.getItem('aahar_custAddress');
+            }
+        }
+
+        function logOrderToHistory(kitchen, menu, price) {
+            let currentHistory = JSON.parse(localStorage.getItem('aahar_order_history')) || [];
+            
+            const newOrder = {
+                id: 'AAH-' + Math.floor(100000 + Math.random() * 900000),
+                kitchen: kitchen,
+                menu: menu,
+                price: price,
+                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+            };
+
+            currentHistory.unshift(newOrder);
+            localStorage.setItem('aahar_order_history', JSON.stringify(currentHistory));
+            renderOrderHistory();
+        }
+
+        function renderOrderHistory() {
+            const historyList = document.getElementById('orderHistoryList');
+            const history = JSON.parse(localStorage.getItem('aahar_order_history')) || [];
+
+            if (history.length === 0) {
+                historyList.innerHTML = `<li class="no-history">You haven't placed any orders yet. Ready for your first home meal?</li>`;
+                return;
+            }
+
+            historyList.innerHTML = history.map(order => `
+                <li class="history-item">
+                    <div>
+                        <strong style="color: #e65c00;">${order.id}</strong> — <span>${order.kitchen}</span>
+                        <div class="history-details">${order.menu}</div>
+                    </div>
+                    <div class="history-meta">
+                        <div>${order.date}</div>
+                        <div style="font-weight: bold; color: #2e7d32;">₹${order.price}</div>
+                        <span class="history-status">Sent to WhatsApp</span>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // Form collection and checkout text string builder
+        function handleFormSubmit(event) {
+            event.preventDefault(); 
+
+            // On mobile, block WhatsApp step if UPI payment hasn't been initiated
+            if (window.innerWidth <= 768 && !paymentInitiated) {
+                alert("⚠️ Please complete the UPI payment first before sending the order to WhatsApp.");
+                return;
+            }
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            saveUserProfile(name, phone, address);
+            logOrderToHistory(currentKitchen, currentMenu, currentPriceNum);
+
+            const textMessage = 
+                "*NEW FOOD ORDER FROM AAHAR* 🍛\n\n" +
+                "👤 *Customer:* " + name + "\n" +
+                "📞 *Phone:* " + phone + "\n" +
+                "📍 *Delivery Address:* " + address + "\n\n" +
+                "---------------------------\n" +
+                "🏪 *Kitchen:* " + currentKitchen + "\n" +
+                "🍱 *Menu:* " + currentMenu + "\n" +
+                "💰 *Total Amount:* ₹" + currentPriceNum + " (Includes delivery)\n\n" +
+                "💳 *Payment Status:* Completed via Integrated App Payment Flow\n\n" +
+                "Please confirm my order preparation for tomorrow!";
+
+            const encodedMessage = encodeURIComponent(textMessage);
+            const whatsAppUrl = "https://wa.me/" + MY_WHATSAPP_NUMBER + "?text=" + encodedMessage;
+
+            closeCheckout();
+            window.open(whatsAppUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
