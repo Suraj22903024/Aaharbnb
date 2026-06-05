@@ -13,8 +13,7 @@
       "imports": {
         "firebase/app":       "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
         "firebase/auth":      "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
-        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
-        "firebase/storage":   "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js"
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
       }
     }
     </script>
@@ -633,26 +632,36 @@
 
         <!-- Profile Photo -->
         <div class="dash-card">
-            <h3>📸 Profile Photo</h3>
-            <div class="photo-upload-area" id="profilePhotoArea">
-                <input type="file" accept="image/*" id="profilePhotoInput" onchange="previewProfilePhoto(event)">
-                <span class="upload-icon">🤳</span>
-                <p>Click to upload your photo</p>
-                <p class="hint">JPG, PNG · max 5MB</p>
+            <h3>📸 Your Photo</h3>
+            <div class="dash-alert dash-alert-info" style="margin-bottom:16px; font-size:.85rem;">
+                📌 <strong>How to get a photo link:</strong> Open Google Photos or any photo → share → copy link. Or upload to <a href="https://imgur.com/upload" target="_blank" style="color:#1565C0;">imgur.com</a> (free) → right-click image → copy image address.
             </div>
-            <img id="profilePhotoPreview" class="profile-preview" src="" alt="" style="display:none; margin-top:14px;">
+            <div class="form-group">
+                <label>Profile Photo Link (URL)</label>
+                <input type="url" id="profilePhotoUrl" placeholder="https://i.imgur.com/your-photo.jpg" oninput="previewProfilePhoto(this.value)">
+            </div>
+            <img id="profilePhotoPreview" class="profile-preview" src="" alt="" style="display:none; margin-top:8px;">
         </div>
 
         <!-- Food Photos -->
         <div class="dash-card">
-            <h3>🍱 Food Photos</h3>
-            <div class="photo-upload-area" id="foodPhotosArea">
-                <input type="file" accept="image/*" multiple id="foodPhotosInput" onchange="previewFoodPhotos(event)">
-                <span class="upload-icon">📷</span>
-                <p>Click to upload food photos (up to 5)</p>
-                <p class="hint">JPG, PNG · max 5MB each</p>
+            <h3>🍱 Food Photo Links</h3>
+            <p style="font-size:.85rem; color:var(--muted); margin-bottom:16px;">Paste links to your food photos (up to 3). Upload them to <a href="https://imgur.com/upload" target="_blank" style="color:var(--saffron);">imgur.com</a> for free and paste the links here.</p>
+            <div class="form-group">
+                <label>Food Photo 1 (shown on your card)</label>
+                <input type="url" id="foodPhoto1" placeholder="https://i.imgur.com/food1.jpg" oninput="previewFoodPhoto(1, this.value)">
             </div>
-            <div class="photo-preview-grid" id="foodPhotoPreviews"></div>
+            <img id="foodPreview1" src="" alt="" style="display:none; width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:10px;">
+            <div class="form-group">
+                <label>Food Photo 2</label>
+                <input type="url" id="foodPhoto2" placeholder="https://i.imgur.com/food2.jpg" oninput="previewFoodPhoto(2, this.value)">
+            </div>
+            <img id="foodPreview2" src="" alt="" style="display:none; width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:10px;">
+            <div class="form-group">
+                <label>Food Photo 3</label>
+                <input type="url" id="foodPhoto3" placeholder="https://i.imgur.com/food3.jpg" oninput="previewFoodPhoto(3, this.value)">
+            </div>
+            <img id="foodPreview3" src="" alt="" style="display:none; width:100%; height:160px; object-fit:cover; border-radius:10px;">
         </div>
 
         <button class="submit-btn" id="submitKitchenBtn" onclick="submitKitchenForApproval()" style="font-size:1rem; padding:15px;">
@@ -795,8 +804,6 @@ import { getAuth, onAuthStateChanged, signInWithPopup,
 import { getFirestore, collection, doc, getDoc, setDoc,
          addDoc, query, where, limit, getDocs,
          serverTimestamp, updateDoc }                      from "firebase/firestore";
-import { getStorage, ref as storageRef,
-         uploadBytes, getDownloadURL }                     from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: "AIzaSyA1qFfABOscGpuwh7-Igtef7MeFNZxPjt0",
@@ -809,7 +816,6 @@ const firebaseConfig = {
 const app     = initializeApp(firebaseConfig);
 const auth    = getAuth(app);
 const db      = getFirestore(app);
-const storage = getStorage(app);
 
 // ═══════════════════════════════════════════════════════
 // GLOBALS
@@ -1065,8 +1071,16 @@ async function loadSellerKitchenData(uid) {
             document.getElementById("deliveryNote").value = d.deliveryNote || "";
             document.getElementById("sellerPhone").value = d.phone || "";
             if (d.profilePhotoUrl) {
+                document.getElementById("profilePhotoUrl").value = d.profilePhotoUrl;
                 const prev = document.getElementById("profilePhotoPreview");
                 prev.src = d.profilePhotoUrl; prev.style.display = "block";
+            }
+            if (d.foodPhotoUrls) {
+                d.foodPhotoUrls.forEach((url, i) => {
+                    const field = document.getElementById("foodPhoto" + (i+1));
+                    const prev  = document.getElementById("foodPreview" + (i+1));
+                    if (field && url) { field.value = url; prev.src = url; prev.style.display = "block"; }
+                });
             }
 
             const banner = document.getElementById("sellerStatusBanner");
@@ -1083,31 +1097,20 @@ async function loadSellerKitchenData(uid) {
     } catch(e) { console.log("loadSellerKitchenData:", e); }
 }
 
-function previewProfilePhoto(event) {
-    profilePhotoFile = event.target.files[0];
-    if (!profilePhotoFile) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        const prev = document.getElementById("profilePhotoPreview");
-        prev.src = e.target.result; prev.style.display = "block";
-    };
-    reader.readAsDataURL(profilePhotoFile);
+function previewProfilePhoto(url) {
+    const prev = document.getElementById("profilePhotoPreview");
+    if (url && url.startsWith("http")) { prev.src = url; prev.style.display = "block"; }
+    else { prev.style.display = "none"; }
 }
 
-function previewFoodPhotos(event) {
-    foodPhotoFiles = Array.from(event.target.files).slice(0, 5);
-    const grid = document.getElementById("foodPhotoPreviews");
-    grid.innerHTML = "";
-    foodPhotoFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const img = document.createElement("img");
-            img.src = e.target.result; img.className = "preview-thumb";
-            grid.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    });
+function previewFoodPhoto(n, url) {
+    const prev = document.getElementById("foodPreview" + n);
+    if (url && url.startsWith("http")) { prev.src = url; prev.style.display = "block"; }
+    else { prev.style.display = "none"; }
 }
+
+// legacy stubs so window.* exports don't break
+function previewFoodPhotos() {}
 
 async function submitKitchenForApproval() {
     const user = auth.currentUser;
@@ -1129,23 +1132,12 @@ async function submitKitchenForApproval() {
     btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Submitting...';
 
     try {
-        let profilePhotoUrl = "";
-        let foodPhotoUrls = [];
-
-        // Upload profile photo
-        if (profilePhotoFile) {
-            const sRef = storageRef(storage, `kitchens/${user.uid}/profile_${Date.now()}`);
-            await uploadBytes(sRef, profilePhotoFile);
-            profilePhotoUrl = await getDownloadURL(sRef);
-        }
-
-        // Upload food photos
-        for (let i = 0; i < foodPhotoFiles.length; i++) {
-            const sRef = storageRef(storage, `kitchens/${user.uid}/food_${i}_${Date.now()}`);
-            await uploadBytes(sRef, foodPhotoFiles[i]);
-            const url = await getDownloadURL(sRef);
-            foodPhotoUrls.push(url);
-        }
+        const profilePhotoUrl = document.getElementById("profilePhotoUrl").value.trim();
+        const foodPhotoUrls = [
+            document.getElementById("foodPhoto1").value.trim(),
+            document.getElementById("foodPhoto2").value.trim(),
+            document.getElementById("foodPhoto3").value.trim()
+        ].filter(u => u.startsWith("http"));
 
         // Check if kitchen doc already exists
         const q = query(collection(db, "kitchens"), where("uid","==",user.uid), limit(1));
